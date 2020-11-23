@@ -1,0 +1,43 @@
+spring:
+  data:
+    cassandra:
+      contact-points: ${CASSANDRA_HOST:10.8.0.18}
+      port: ${CASSANDRA_PORT:9042}
+      keyspace-name: ${CASSANDRA_KEYSPACE}
+      username: ${CASSANDRA_USERNAME}
+      password: ${CASSANDRA_PASSWORD}
+      schema-action: NONE
+
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: ${KAFKA_BROKERS}
+          auto-create-topics: true
+          configuration:
+            auto.offset.reset: latest
+
+
+gypsee
+  remote:
+    services:
+      transaction
+        name: gypsee-transaction
+        url: http://gypsee-transaction.gypsee.svc.cluster.local:8056
+  cache:
+    provider: redis
+    redis:
+      connection:
+        use-pool: true
+        lettuce:
+          pool:
+            max-idle: 8
+            min-idle: 0
+            max-active: 7
+            max-wait: -1
+            shutdown-timeout: 200
+      server:
+        password: ${CACHE_PASSWORD}
+        standalone:
+          host: ${CACHE_HOST}
+          port: ${CACHE_PORT}
